@@ -64,7 +64,21 @@ The algorithm calculate the fraction of N recursively by continuously call the p
 
 Let $N\ge0$, after N-th loop, the output is equal to the factorial calculation of N.
 
-The algorithm will run $N$ times of the loop to complete the calculation. The running time should be $\Omicron(Nn^2)$
+The algorithm will run $N$ times of the loop to complete the calculation. The running time should be $\Omicron(Nn^2)$.
+
+**Correctness:**
+
+Base case: 
+
+When $n=0$, the value of $N!$ is defined as 1, which is the correct value that returned by the algorithm.
+
+Induction hypothesis: 
+
+Assume that for any $N\lt k$, the algorithm can correctly calculate the factorial number of $N!$. 
+
+Induction: 
+
+For $N=k$, according to the definition of the factorial, the factorial number of $N$ multiplies all the integers from 1 to $k$ to get $N!$, $N!=N\times(N-1)!$. According to the hypothesis, the algorithm can give a correct result for $(N-1)!$, then multiply with $N$ to get the result of $N!$. The induction hypothesis then be proofed. 
 
 <div STYLE="page-break-after: always;"></div>
 
@@ -129,7 +143,8 @@ The counting sort algorithm convert the input integers to index and store in a w
 ```pseudocode
 CountingSort(n) {
 	// Create a counting array, with (max-min) zeros
-	c = array(range(max(n)-min(n)+1))
+	for i in range(n)
+		c[i] = 0
 	// Count each element
 	for i=0 to n do
 		c[n[i]] += 1
@@ -144,10 +159,11 @@ CountingSort(n) {
 		o[c[n[i]]] = n[i]
 		c[n[i]] -= 1
 	end for
+	return o
 }
 ```
 
-Time complexity: 
+**Time complexity:** 
 
 In step 1, create array `c = array(range(max(n)-min(n)+1))` need running time `max(n)-min(n)`, which is $\Omicron (D)$.
 
@@ -161,6 +177,10 @@ In total, the running time cost in counting sort algorithm is:
 $$
 T(n)=\Omicron(D) + \Omicron(n) + \Omicron(D) + \Omicron(n) = \Omicron(n+D)
 $$
+
+**Correctness:**
+
+In order to proof the correctness of the counting sort algorithm, should proof that the output array is sorted, which means that later neighbor elements is smaller than the previous, $o[n+1]\lt o[n]$. However, in the algorithm, if two elements $n[n+1] \lt n[n]$, the smaller element will put after the bigger. So the correctness is proofed.
 
 ### (c)
 
@@ -393,8 +413,7 @@ RecursiveFib(n)
 	else
 		F_n = 0
 		// Recursive compute Fibonacci number
-		F_n = RecursiveFib(n-1) + RecursiveFib(n-2)
-		return F_n
+		return RecursiveFib(n-1) + RecursiveFib(n-2)
 	end if
 end
 ```
@@ -421,6 +440,20 @@ T(n) &= \Omega(2^{n/2})
 $$
 The same result can be also found from the result in part (a).
 
+**Correctness: **
+
+Base case:
+
+When $n\le1$, the Fibonacci number $F_n=n$.
+
+Induction hypothesis:
+
+The algorithm can calculate the Fibonacci number $F_n$ correctly for any $n$.
+
+Induction:
+
+According to the principle of Fibonacci sequence, the $n$th Fibonacci number $F_n$ is calculated by $F_{n-1}+F_{n-2}$. The algorithm use recursive to call $n-1$ and $n-2$ , then calculate $F_{n-1}$ and $F_{n-2}$ separately. Finally add $F_{n-1}$ and $F_{n-2}$ in order to output the Fibonacci number $F_n$. So in this case, the induction hypothesis can be proofed.
+
 #### ii)
 
 ```pseudocode
@@ -444,12 +477,26 @@ end
 
 The algorithm use for loop to compute the Fibonacci number, by storing two previous state of number as temp and reuse in the new loop round. 
 
-**Upper bound**: 
+**Running time upper bound**: 
 
 In the code, line 9-13 run $n-1$ times since it start from $2$. So the running time should be:
 $$
 T(n)\le T(n-1)+\Omicron(1)=\Omicron(n)
 $$
+
+**Correctness: **
+
+Base case:
+
+When $n\le1$, the Fibonacci number $F_n=n$.
+
+Induction hypothesis:
+
+The algorithm can calculate the Fibonacci number $F_n$ correctly for any $n$, if the previous two Fibonacci numbers $F_{n-1}$ and $F_{n-2}$ can be calculated.
+
+Induction:
+
+According to the hypothesis and principle of Fibonacci sequence, the algorithm can calculate the $(n-1)$th and $(n-2)$th Fibonacci number. Hence, when the algorithm summing two previous Fibonacci number to form the $n$th Fibonacci number, the algorithm can then, calculated the correct number. Hence the induction has been proofed.
 
 #### iii)
 
