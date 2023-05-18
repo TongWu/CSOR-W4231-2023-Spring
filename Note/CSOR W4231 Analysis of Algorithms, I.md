@@ -1338,7 +1338,7 @@ We use **adjacency list** otherwise
 
 
 
-# 6 Depth-first search (DFS) and its applications
+# 6. Depth-first search (DFS) and its applications
 
 ## 6.1 Depth-first search (DFS)
 
@@ -1428,7 +1428,150 @@ Search(u)
 
 
 
-# 7 NP Class and SAT
+# 7. NP Class and SAT
 
 
 
+
+
+# 9. Dynamic Programming: Matrix Chain multiplication
+
+## 9.1 Matrix Chain Multiplication
+
+> 矩阵链乘法（叉乘）
+
+**Example:**
+
+Input: 
+
+- Matrices $A_1,A_2,A_3$ of dimensions $6\times1,1\times5,5\times2$
+
+Output:
+
+- A way to compute the product, so that the **number of arithmetic operations** performed is **minimized**.
+- The minimum number of arithmetic operations required.
+
+> - We do not want to compute the actual product
+> - Matrix multiplication is associative but not commutative (in general). Hence a solution to our problem corresponds to a parameterization of the product.
+>   - 矩阵乘法是关联的但不是交换的。因此，解决问题的方案应该对应叉乘的括号 -> $(A_1A_2)A_3$ or $A_1(A_2A_3)$ 
+> - We want the **optimal parameterization and cost**. 
+>   - 即如何叉乘是最优的，和该最优化叉乘的最优化计算步骤
+
+### 9.1.1 Estimating number of arithmetic operations
+
+- Let $A,B$ be matrices with dimensions $m\times n, n\times p$
+- Let $C=AB$. Then C is an $m\times p$ matrix:
+
+$$
+c_{ij}=\sum^n_{k=1}a_{ik}\times b_{kj}
+$$
+
+![Python numpy tensorflow 中的点乘和矩阵乘法- 腾讯云开发者社区-腾讯云](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfS_reZZGgVClo5z3CZGxDGWxi5HoDZo-bvQ&usqp=CAU)
+
+-> $c_{ij}$ requires $n$ scalar multiplications, $n-1$ additions
+
+-> number of arithmetic operations to compute $c_{ij}$ is dominated by **the number of scalar multiplications**
+
+> - Let $A,B$ be matrices with dimensions $m\times n, n\times p$
+> - Let $C=AB$. Then C is an $m\times p$ matrix:
+> - Total number of scalar multiplications to fill $C$ is $mnp$
+
+### 9.1.2 Minimizing number of scalar multiplications
+
+**Example:**
+
+Input:
+
+- Matrices $A_1,A_2,A_3$ of dimensions $6\times1,1\times5,5\times2$
+
+There are two ways to computing $A_1A_2A_3$:
+
+1. $(A_1A_2)A_3$: first compute $A_1A_2$, then multiply it by $A_3$
+   - $mnp = 6\times 1 \times 5  = 30$ for $A_1A_2$, the result matrix is $6\times 5$
+   - $mnp = 6 \times 5 \times 2 = 60$
+   - Sum up, the total number of scalar multiplications should be $90$
+2. $A_1(A_2A_3)$: first compute $A_2A_3$, then multiply $A_1$
+   - $mnp = 1\times5\times2=10$, the result matrix should be $1\times2$
+   - $mnp = 6\times 1\times 2 = 12$
+   - Sum up, the total number of scalar multiplications should be $22$
+
+> A product of matrices is fully parenthesized if it is:
+>
+> 1. A single matrix, or
+> 2. the product of two fully parenthesized matrices, surrounded by parentheses
+>
+> **Example:** $((A_1A_2)A_3)$ and $(A_1(A_2A_3))$ are fully parenthesized
+
+## 9.2 A first attempt: brute-force
+
+- $A_1,..., A_n$ are matrices of dimensions $p_{i-1}\times p_i$ for $1\le i \le n$
+
+- Consider product $A_1...A_n$
+
+- Let $P(n)=$ number of parameterizations of the product $A_1...A_n$
+
+  - 即有多少种括号的组合
+
+- Then $P(0)=0, P(1)=1, P(2)=1$
+
+  - 即在只有1个矩阵和两个矩阵的时候，都只能有一种括号组合$A_1A_2$
+
+- The product can be divided into the product of two parenthesized subproducts for some $1\le k \le n-1$:
+  $$
+  ((A_1A_2....A_k)(A_{k+1}...A_n))
+  $$
+
+- Given $k$, $P(n)$ for the product $((A_1A_2....A_k)(A_{k+1}...A_n))$ can be calculated recursively:
+
+$$
+P(k)\times P(n-k)
+$$
+
+- There are n −1 possible values for k. Hence
+  $$
+  P(n)=\sum^{n-1}_{k=1}P(k)\times P(n-k), \text{for } n\gt1
+  $$
+
+- The lower bound of $P(n)$ should be:
+
+$$
+P(n)\ge P(1)\times P(n-1) + P(2)\times P(n-2) \\
+P(n) \ge P(n-1)+P(n-2)
+$$
+
+- Which is a Fibonacci number, so $P(n)\ge F_n$
+- Hence $P(n)= \Omega(2^{n/2})$
+
+> Brute force requires exponential time
+
+## 9.3 A second attempt: divide and conquer
+
+
+
+## 9.4 Organizing DP computations
+
+
+
+1. 找到在ResNet架构上对比几个SGD优化器的论文
+
+2. 做PPT
+
+   - 讨论Resnet架构优化了什么问题
+
+   - 在此基础上，SGD优化器优化了什么问题
+
+   - 讨论之前找到的论文干了什么
+
+   - reproduce的结果（2页）
+
+   - 总结reproduce结果
+
+   - 引入padam，介绍
+
+   - padam+resnet的结果
+
+   - 总结
+
+3. 修改代码，对比多个SGD
+
+4. 加入padam，验证padam各项性能都优于其他的SGD优化器
