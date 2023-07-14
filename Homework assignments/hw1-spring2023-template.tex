@@ -1,0 +1,145 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{algpseudocode,algorithm}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{psfrag,color}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{amssymb}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\textheight}{9.0in}
+\setlength{\parindent}{0in}
+
+\renewcommand\arraystretch{2.4}
+
+\renewcommand{\baselinestretch}{1.2}
+\newcommand{\problem}[1]{ \medskip \pp $\underline{\rm Problem\ #1}$\\ }
+
+\pagestyle{empty}
+
+\def\pp{\par\noindent}
+
+\begin{document}
+
+\centerline{\{\bf Your Name, Your UNI\}}
+\centerline{\bf Homework 1 Solutions}
+\centerline{\bf CSOR 4231.001 --- Spring 2023}
+
+\bigskip 
+\bigskip
+
+\noindent {\bf Homework Problems}
+
+\begin{enumerate}
+\item (20 points) Consider the problem of computing $N!= 1\cdot 2 \cdot 3 \cdots N$.
+\begin{enumerate}
+\item (10 points) If $N$ is an $n$-bit integer, how many bits long is $N!$ in $\Theta()$ notation? Give your answer in terms of both of $N, n$.
+\item (10 points) Give an algorithm to compute $N!$ and analyze its running time. Give your answer in terms of both of $N, n$.
+Assume that the time to multiply two $n$-bit integers is $O(n^2)$.
+\end{enumerate}
+
+%
+\bigskip
+\item (40 points) On sorting
+\begin{enumerate}
+\item[(a)] (15 points) {\em A lower bound for comparison-based sorting}
+
+You may view a comparison-based sorting algorithm as a binary 
+tree. For example, the tree  in Figure~1
+sorts 3 integers $x_1, x_2, x_3$: it first compares $x_1$ to $x_2$; 
+if $x_1<x_2$, it compares $x_2$ to $x_3$, else is compares  $x_1$ to $x_3$, etc. 
+Each leaf corresponds to a possible permutation of the 3 numbers. For example, 
+if $x_1< x_2 < x_3$, we get the leaf labelled $x_1, x_2, x_3$.
+
+\medskip
+Suppose you want to sort $n$ integers.
+\begin{enumerate}
+\item (2 points) Argue that every possible permutation of the $n$ numbers must 
+appear as a leaf in the tree corresponding to a sorting algorithm. 
+\item (2 points) {\em Fill in the missing number in the following sentence:} 
+%
+Thus the tree has at least $\ldots$  leaves. 
+\item (3 points) The worst-case time complexity of the sorting algorithm 
+is given by the maximum number of comparisons performed by the algorithm. 
+What does the latter quantity correspond to in the tree?
+\item (3 points) Consider a binary tree of depth $d$. Give with a proof 
+an upper bound on the number of leaves of the tree. 
+\item (5 points) Derive a lower bound for  the worst-case time complexity 
+of a comparison-based sorting algorithm.
+\end{enumerate}
+\item [(b)]  (22 points)  Give an algorithm that sorts any array of 
+$n$ integers $x_1, \ldots, x_n$  in $O(n+D)$ time, where 
+$D= \max\limits_i x_i - \min\limits_i x_i$.   {\em Hint: Think how 
+to use extra space to achieve this running time.}
+\item[(c)] (3 points) Suppose $D$ is small (that is, $O(n)$).  
+Does the algorithm you proposed in part (b) contradict the 
+lower bound you derived in part (a)?
+\end{enumerate}
+
+%
+\bigskip
+\item  (30 points) The Hadamard matrices $H_0, H_1, H_2, \ldots$ 
+are defined as follows:
+\begin{itemize}
+%
+\renewcommand\arraystretch{1.0}
+%
+\item $H_0$ is the $1\times 1$ matrix 
+$\begin{bmatrix} 1 \end{bmatrix}$
+\item For $k>0$, $H_k$ is the $2^k \times 2^k$ matrix
+$$
+H_k = \begin{bmatrix}  H_{k-1}  & H_{k-1} \\ H_{k-1}  & -H_{k-1} \end{bmatrix}
+$$
+\end{itemize}
+Let $\nu$ be a column vector of length $n=2^k$. Can you compute 
+the matrix-vector product $H_k \nu$ faster than the straightforward
+algorithm that requires $O(n^2)$ time? (Assume that all the numbers 
+involved are small enough that basic arithmetic operations like addition 
+and multiplication  take unit time.)
+
+%
+\bigskip
+%
+\renewcommand\arraystretch{1.0}
+%
+\item (60 points) The Fibonacci numbers are defined by the recurrence 
+\begin{eqnarray*}
+F_n =
+\left\{ \begin{array}{lr}
+0, & \mbox{if $n=0$} \\
+1, & \mbox{if $n=1$} \\
+F_{n-1} + F_{n-2}, & \mbox{if $n\geq 2$} 
+\end{array}
+\right. 
+\end{eqnarray*}
+\begin{enumerate}
+\item (4 points) Show that $F_n \geq 2^{n/2}$, $n \geq 6$. 
+\item Assume that the cost of adding, subtracting, or multiplying
+two integers is $O(1)$, independent of the size of the integers.  
+\begin{itemize}
+\item[i)] (6 points) Give  an algorithm that computes $F_n$ based on the 
+recursive definition above. Develop a recurrence for the running time of 
+your algorithm and give an asymptotic {\em lower} bound for it.
+\item[ii)] (8 points) Give a non-recursive algorithm that asymptotically 
+performs fewer additions than the recursive algorithm. Give an asymptotic 
+upper bound for the new algorithm. 
+\item[iii)] (22 points) Give an algorithm to compute $F_n$ in $O(\log{n})$ time 
+using only integer additions and multiplications. \\
+({\em Hint: Observe that 
+$$
+\begin{bmatrix}  F_{2}   \\  F_1 \end{bmatrix} =  
+\begin{bmatrix}  1 & 1  \\  1 & 0  \end{bmatrix} \cdot \begin{bmatrix}  F_{1}   \\  F_0 \end{bmatrix}.
+$$
+Can you build on this  to compute $F_n$?})
+\end{itemize}
+\item (20 points) Now assume that adding two $m$-bit integers requires 
+$\Theta(m)$ time and that multiplying two $m$-bit integers requires 
+$\Theta( m^2 )$ time. What is the running time of the three
+algorithms in part (b) under this more reasonable cost measure 
+for the elementary arithmetic operations?
+\end{enumerate} 
+\end{enumerate}
+\end{document}
